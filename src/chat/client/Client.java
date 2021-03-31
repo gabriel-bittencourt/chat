@@ -61,7 +61,7 @@ public class Client {
     public void recMsg () throws IOException {
         String msg = this.inputStream.readLine();
         System.out.println("Server >> " + msg);
-        Platform.runLater(() -> this.clientApp.addMsg(msg));
+        Platform.runLater(() -> this.clientApp.addMsg("Server >> " + msg));
     }
 
     public void sendMsg (String msg) throws IOException {
@@ -69,7 +69,7 @@ public class Client {
         System.out.println("You >> " + msg);
         this.outputStream.write(msg + '\n');
         this.outputStream.flush();
-
+        Platform.runLater(() -> this.clientApp.addMsg("You >> " + msg));
     }
 
     public String getIpAddress(){

@@ -51,6 +51,7 @@
                 prefHeight="41.0"
                 prefWidth="128.0"
                 promptText="IP do servidor"
+                text="127.0.0.1"
         />
         <TextField
                 fx:id="inputPort"
@@ -59,6 +60,7 @@
                 prefHeight="41.0"
                 prefWidth="128.0"
                 promptText="Porta"
+                text="8080"
         />
         <Button
                 fx:id="connectServerBtn"

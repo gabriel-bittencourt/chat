@@ -17,10 +17,10 @@
                       prefWidth="310.0"
                       style="-fx-border-color: #000;"
               >
-                  <TextArea
-                          prefHeight="310.0"
-                          prefWidth="310.0"
-                  />
+<!--                  <TextArea-->
+<!--                          prefHeight="310.0"-->
+<!--                          prefWidth="310.0"-->
+<!--                  />-->
             </Pane>
               <Button
                       fx:id="sendMsgBtn"
@@ -55,6 +55,7 @@
                       prefHeight="41.0"
                       prefWidth="128.0"
                       promptText="Porta"
+                      text="8080"
               />
               <Button
                       fx:id="startServerBtn"

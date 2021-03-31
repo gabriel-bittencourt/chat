@@ -1,13 +1,16 @@
 package chat.view.client;
 
 
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 import javafx.scene.layout.Pane;
 import chat.client.Client;
+import javafx.scene.text.Text;
 
 import java.io.IOException;
 
@@ -63,7 +66,23 @@ public class ClientController {
 
     public void addMsg(String msg) {
 
+        ObservableList<Node> paneChildren = msgPane.getChildren();
 
+        int nChildren = paneChildren.size();
+        if(nChildren >= 20){
+
+            paneChildren.remove(0);
+            nChildren--;
+
+            for (Node child: paneChildren) {
+                double prevY = child.getLayoutY();
+                child.setLayoutY(prevY - 15);
+            }
+        }
+
+        int offset = (1 + nChildren) * 15;
+        Text text = new Text(5, offset, msg);
+        msgPane.getChildren().add(text);
 
     }
 

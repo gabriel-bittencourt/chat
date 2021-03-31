@@ -67,7 +67,7 @@ public class Server {
     public void recMsg () throws IOException {
         String msg = this.inputStream.readLine();
         System.out.println("Client >> " + msg);
-        Platform.runLater(() -> this.mainApp.addMsg(msg));
+        Platform.runLater(() -> this.mainApp.addMsg("Client >> " + msg));
     }
 
     public void sendMsg (String msg) throws IOException {
@@ -75,7 +75,7 @@ public class Server {
         System.out.println("You >> " + msg);
         this.outputStream.write(msg + '\n');
         this.outputStream.flush();
-
+        Platform.runLater(() -> this.mainApp.addMsg("You >> " + msg));
     }
 
     public int getPort(){
