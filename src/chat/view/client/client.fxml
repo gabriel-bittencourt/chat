@@ -34,6 +34,7 @@
                 prefWidth="240.0"
                 promptText="Mensagem"
                 fx:id="msgField"
+                onAction="#sendMsg"
         />
 
     </Pane>

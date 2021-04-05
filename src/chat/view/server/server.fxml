@@ -39,6 +39,7 @@
                       prefHeight="41.0"
                       prefWidth="240.0"
                       promptText="Mensagem"
+                      onAction="#sendMsg"
               />
 
        </Pane>

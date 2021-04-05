@@ -33,7 +33,6 @@ public class ClientController {
 
     @FXML
     private void initialize() {
-        System.out.println("Iniciou controller");
 
     }
 
