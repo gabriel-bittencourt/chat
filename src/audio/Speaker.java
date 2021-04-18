@@ -1,6 +1,5 @@
 package audio;
 
-import com.sun.corba.se.spi.legacy.interceptor.ORBInitInfoExt;
 
 import javax.sound.sampled.*;
 import java.io.ByteArrayInputStream;
@@ -9,7 +8,7 @@ import java.io.IOException;
 public class Speaker {
 
     private AudioFormat audioFormat;
-    private SourceDataLine speakers;
+    private SourceDataLine speaker;
     private ByteArrayInputStream byteInputStream;
     private AudioInputStream audioInputStream;
     private DataLine.Info info;
@@ -37,7 +36,7 @@ public class Speaker {
 
         try {
             info = new DataLine.Info(SourceDataLine.class, audioFormat);
-            speakers = (SourceDataLine) AudioSystem.getLine(info);
+            speaker = (SourceDataLine) AudioSystem.getLine(info);
 
             playThread = new PlayThread();
             playThread.start();
@@ -47,7 +46,6 @@ public class Speaker {
             e.printStackTrace();
         }
 
-        System.out.println("Done!");
     }
 
     public boolean isPlaying(){
@@ -62,17 +60,18 @@ public class Speaker {
 
             System.out.println("Playing audio...");
             try {
-                speakers.open(audioFormat);
-                speakers.start();
+                speaker.open(audioFormat);
+                speaker.start();
 
                 do {
                     cnt = audioInputStream.read(tempBuffer, 0, tempBuffer.length);
                     if (cnt > 0)
-                        speakers.write(tempBuffer, 0, cnt);
+                        speaker.write(tempBuffer, 0, cnt);
                 } while (cnt != -1);
 
-                speakers.drain();
-                speakers.close();
+                speaker.drain();
+                speaker.close();
+                System.out.println("Done!");
             }
             catch(LineUnavailableException | IOException e){
                 System.out.println(e.toString());

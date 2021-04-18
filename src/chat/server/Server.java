@@ -5,6 +5,8 @@ import java.net.Socket;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.Base64;
+
 import javafx.application.Platform;
 
 
@@ -50,7 +52,7 @@ public class Server {
                 this.outputStream.flush();
 
 
-                this.outputStream.write("Conexão iniciada" + "\n");
+                this.outputStream.write("Conexão iniciada" + "\nText\n");
                 this.outputStream.flush();
 
                 while (true) {
@@ -65,17 +67,39 @@ public class Server {
     }
 
     public void recMsg () throws IOException {
-        String msg = this.inputStream.readLine();
-        System.out.println("Client >> " + msg);
-        Platform.runLater(() -> this.mainApp.addMsg("Client >> " + msg));
+        String line = "";
+        String message = "";
+        do{
+            message += line;
+            line = this.inputStream.readLine();
+        }while(!(line.equals("Text") || line.equals("Audio")));
+
+        final String finalMessage = message;
+        if(line.equals("Text")){
+            System.out.println("Server >> " + finalMessage);
+            Platform.runLater(() -> this.mainApp.addMsg("Server >> " + finalMessage));
+        }
+        else{
+            System.out.println("Server >> Mensagem de voz");
+            byte[] audio = Base64.getDecoder().decode(finalMessage);
+            Platform.runLater(() -> this.mainApp.addMsg(audio));
+        }
     }
 
     public void sendMsg (String msg) throws IOException {
 
         System.out.println("You >> " + msg);
-        this.outputStream.write(msg + '\n');
+        this.outputStream.write(msg + "\nText\n");
         this.outputStream.flush();
         Platform.runLater(() -> this.mainApp.addMsg("You >> " + msg));
+    }
+
+    public void sendMsg (byte[] audio) throws IOException {
+        System.out.println("You >> Mensagem de voz");
+        String msg = new String(audio, StandardCharsets.UTF_8);
+        this.outputStream.write(msg + "\nAudio\n");
+        this.outputStream.flush();
+        Platform.runLater(() -> this.mainApp.addMsg(audio));
     }
 
     public int getPort(){

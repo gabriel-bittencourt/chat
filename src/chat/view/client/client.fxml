@@ -19,7 +19,7 @@
                 style="-fx-border-color: #000;">
         </Pane>
         <Button
-                layoutX="268.0"
+                layoutX="185.0"
                 layoutY="345.0"
                 mnemonicParsing="false"
                 prefHeight="41.0"
@@ -27,11 +27,21 @@
                 text="Enviar"
                 onAction="#sendMsg"
         />
+        <Button
+            layoutX="255.0"
+            layoutY="345.0"
+            mnemonicParsing="false"
+            prefHeight="41.0"
+            prefWidth="68.0"
+            text="Gravar"
+            onMousePressed="#captureAudio"
+            onMouseReleased="#stopAndSendAudio"
+        />
         <TextField
                 layoutX="11.0"
                 layoutY="345.0"
                 prefHeight="41.0"
-                prefWidth="240.0"
+                prefWidth="172.0"
                 promptText="Mensagem"
                 fx:id="msgField"
                 onAction="#sendMsg"
@@ -75,7 +85,7 @@
         />
         <Button
                 fx:id="disconnectServerBtn"
-                layoutX="35.0"
+                layoutX="56.0"
                 layoutY="345.0"
                 mnemonicParsing="false"
                 prefHeight="41.0"

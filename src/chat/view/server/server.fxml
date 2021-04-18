@@ -17,14 +17,10 @@
                       prefWidth="310.0"
                       style="-fx-border-color: #000;"
               >
-<!--                  <TextArea-->
-<!--                          prefHeight="310.0"-->
-<!--                          prefWidth="310.0"-->
-<!--                  />-->
             </Pane>
               <Button
                       fx:id="sendMsgBtn"
-                      layoutX="268.0"
+                      layoutX="185.0"
                       layoutY="345.0"
                       mnemonicParsing="false"
                       onAction="#sendMsg"
@@ -32,12 +28,22 @@
                       prefWidth="68.0"
                       text="Enviar"
               />
+               <Button
+                       layoutX="255.0"
+                       layoutY="345.0"
+                       mnemonicParsing="false"
+                       prefHeight="41.0"
+                       prefWidth="68.0"
+                       text="Gravar"
+                       onMousePressed="#captureAudio"
+                       onMouseReleased="#stopAndSendAudio"
+               />
               <TextField
                       fx:id="msgField"
                       layoutX="11.0"
                       layoutY="345.0"
                       prefHeight="41.0"
-                      prefWidth="240.0"
+                      prefWidth="172.0"
                       promptText="Mensagem"
                       onAction="#sendMsg"
               />
@@ -70,7 +76,7 @@
               />
               <Button
                       fx:id="stopServerBtn"
-                      layoutX="35.0"
+                      layoutX="56.0"
                       layoutY="345.0"
                       mnemonicParsing="false"
                       prefHeight="41.0"

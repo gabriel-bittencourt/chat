@@ -3,6 +3,8 @@ package chat.client;
 import java.io.*;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.util.Base64;
+
 import javafx.application.Platform;
 
 import chat.ClientApp;
@@ -59,17 +61,38 @@ public class Client {
     }
 
     public void recMsg () throws IOException {
-        String msg = this.inputStream.readLine();
-        System.out.println("Server >> " + msg);
-        Platform.runLater(() -> this.clientApp.addMsg("Server >> " + msg));
+        String line = "";
+        String message = "";
+        do{
+            message += line;
+            line = this.inputStream.readLine();
+        }while(!(line.equals("Text") || line.equals("Audio")));
+
+        final String finalMessage = message;
+        if(line.equals("Text")){
+            System.out.println("Server >> " + finalMessage);
+            Platform.runLater(() -> this.clientApp.addMsg("Server >> " + finalMessage));
+        }
+        else{
+            System.out.println("Server >> Mensagem de voz");
+            byte[] audio = finalMessage.getBytes(StandardCharsets.UTF_8);
+            Platform.runLater(() -> this.clientApp.addMsg(audio));
+        }
     }
 
     public void sendMsg (String msg) throws IOException {
-
         System.out.println("You >> " + msg);
-        this.outputStream.write(msg + '\n');
+        this.outputStream.write(msg + "\nText\n");
         this.outputStream.flush();
         Platform.runLater(() -> this.clientApp.addMsg("You >> " + msg));
+    }
+
+    public void sendMsg (byte[] audio) throws IOException {
+        System.out.println("You >> Mensagem de voz");
+        String msg = Base64.getEncoder().encodeToString(audio);
+        this.outputStream.write(msg + "\nAudio\n");
+        this.outputStream.flush();
+        Platform.runLater(() -> this.clientApp.addMsg(audio));
     }
 
     public String getIpAddress(){

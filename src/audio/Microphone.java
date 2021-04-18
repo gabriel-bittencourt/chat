@@ -68,8 +68,7 @@ public class Microphone {
             byte[] data = new byte[microphone.getBufferSize() / 5];
 
             capturing = true;
-            System.out.println("Capturing..." +
-                    "\nPress ENTER to stop capturing.");
+            System.out.println("Capturing...");
             try {
                 microphone.open();
                 microphone.start();

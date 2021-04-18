@@ -49,7 +49,8 @@ public class ClientApp extends Application {
         this.controller.addMsg(msg);
     }
 
-
-
+    public void addMsg(byte[] audio){
+        this.controller.addMsg(audio);
+    }
 
 }

@@ -1,11 +1,12 @@
 package chat.view.client;
 
 
+import audio.Microphone;
+import audio.Speaker;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 import javafx.scene.layout.Pane;
@@ -31,9 +32,13 @@ public class ClientController {
 
     public Client client;
 
+    private Microphone microphone;
+    private Speaker speaker;
+
     @FXML
     private void initialize() {
-
+        microphone = new Microphone();
+        speaker = new Speaker();
     }
 
     public void connect() {
@@ -63,26 +68,33 @@ public class ClientController {
 
     }
 
+    public void playAudio(byte[] audio){
+        speaker.play(audio);
+    }
+
+    public void captureAudio(){
+        microphone.startCapturing();
+    }
+
+    public void stopAndSendAudio() throws IOException{
+        microphone.stopCapturing();
+        byte[] audio = microphone.audioData;
+        client.sendMsg(audio);
+    }
+
     public void addMsg(String msg) {
-
-        ObservableList<Node> paneChildren = msgPane.getChildren();
-
-        int nChildren = paneChildren.size();
-        if(nChildren >= 20){
-
-            paneChildren.remove(0);
-            nChildren--;
-
-            for (Node child: paneChildren) {
-                double prevY = child.getLayoutY();
-                child.setLayoutY(prevY - 15);
-            }
-        }
-
-        int offset = (1 + nChildren) * 15;
+        int offset = scrollMsgPane() + 15;
         Text text = new Text(5, offset, msg);
         msgPane.getChildren().add(text);
+    }
 
+    public void addMsg(byte[] msg){
+        int offset = scrollMsgPane();
+        Button button = new Button("Mensagem de voz");
+        button.setLayoutY(offset);
+        button.setLayoutX(5);
+        button.setOnAction((event) -> playAudio(msg));
+        msgPane.getChildren().add(button);
     }
 
     public void sendMsg() throws IOException {
@@ -92,6 +104,27 @@ public class ClientController {
 
         this.client.sendMsg(msg);
 
+    }
+
+    // Retorna o y a ser usado na prox msg
+    private int scrollMsgPane(){
+        ObservableList<Node> paneChildren = msgPane.getChildren();
+        int offset = 25;
+        int maxChildren = (int)(msgPane.getHeight() / offset);
+        int nChildren = paneChildren.size();
+
+        if(nChildren >= maxChildren){
+
+            paneChildren.remove(0);
+            nChildren--;
+
+            for (Node child: paneChildren) {
+                double prevY = child.getLayoutY();
+                child.setLayoutY(prevY - offset);
+            }
+        }
+
+        return (nChildren) * offset;
     }
 
 }
