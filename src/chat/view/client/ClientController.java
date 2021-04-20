@@ -88,13 +88,20 @@ public class ClientController {
         msgPane.getChildren().add(text);
     }
 
-    public void addMsg(byte[] msg){
+    public void addMsg(byte[] msg, String author){
         int offset = scrollMsgPane();
+        Pane newPane = new Pane();
+        newPane.setLayoutY(offset);
+
+        Text text = new Text(5, 17, author + " >>");
+
         Button button = new Button("Mensagem de voz");
-        button.setLayoutY(offset);
-        button.setLayoutX(5);
+        button.setLayoutX(60);
         button.setOnAction((event) -> playAudio(msg));
-        msgPane.getChildren().add(button);
+
+        newPane.getChildren().addAll(text, button);
+
+        msgPane.getChildren().add(newPane);
     }
 
     public void sendMsg() throws IOException {

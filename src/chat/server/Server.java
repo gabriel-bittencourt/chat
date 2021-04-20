@@ -77,12 +77,12 @@ public class Server {
         final String finalMessage = message;
         if(line.equals("Text")){
             System.out.println("Client >> " + finalMessage);
-            Platform.runLater(() -> this.mainApp.addMsg("Server >> " + finalMessage));
+            Platform.runLater(() -> this.mainApp.addMsg("Client >> " + finalMessage));
         }
         else{
-            System.out.println("Server >> Mensagem de voz");
+            System.out.println("Client >> Mensagem de voz");
             byte[] audio = Base64.getDecoder().decode(finalMessage);
-            Platform.runLater(() -> this.mainApp.addMsg(audio));
+            Platform.runLater(() -> this.mainApp.addMsg(audio, "Client"));
         }
     }
 
@@ -99,7 +99,7 @@ public class Server {
         String msg = Base64.getEncoder().encodeToString(audio);
         this.outputStream.write(msg + "\nAudio\n");
         this.outputStream.flush();
-        Platform.runLater(() -> this.mainApp.addMsg(audio));
+        Platform.runLater(() -> this.mainApp.addMsg(audio, "You"));
     }
 
     public int getPort(){

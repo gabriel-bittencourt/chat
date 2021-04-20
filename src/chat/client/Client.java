@@ -76,7 +76,7 @@ public class Client {
         else{
             System.out.println("Server >> Mensagem de voz");
             byte[] audio = Base64.getDecoder().decode(finalMessage);
-            Platform.runLater(() -> this.clientApp.addMsg(audio));
+            Platform.runLater(() -> this.clientApp.addMsg(audio, "Server"));
         }
     }
 
@@ -92,7 +92,7 @@ public class Client {
         String msg = Base64.getEncoder().encodeToString(audio);
         this.outputStream.write(msg + "\nAudio\n");
         this.outputStream.flush();
-        Platform.runLater(() -> this.clientApp.addMsg(audio));
+        Platform.runLater(() -> this.clientApp.addMsg(audio, "You"));
     }
 
     public String getIpAddress(){

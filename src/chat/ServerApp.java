@@ -49,8 +49,8 @@ public class ServerApp extends Application {
         this.controller.addMsg(msg);
     }
 
-    public void addMsg(byte[] audio) {
-        this.controller.addMsg(audio);
+    public void addMsg(byte[] audio, String author) {
+        this.controller.addMsg(audio, author);
     }
 
 
