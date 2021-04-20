@@ -3,14 +3,10 @@ package chat.view.server;
 import audio.Microphone;
 import audio.Speaker;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import chat.server.Server;
 import javafx.scene.text.Text;
@@ -29,7 +25,8 @@ public class ServerController {
     // Mensagens
     public Pane msgPane;
     public TextField msgField;
-    public Button sendMsgBtn;
+    public Button msgBtn;
+    public Button audioBtn;
     //
 
     public Server server;
@@ -41,11 +38,13 @@ public class ServerController {
     private void initialize() {
         microphone = new Microphone();
         speaker = new Speaker();
+
+        this.disableChat();
     }
 
     public void startServer() {
 
-        if ( this.server.getPort() != -1 ) {
+        if ( this.server.connected ) {
             System.out.println("Servidor já iniciado!");
             return;
         }
@@ -65,11 +64,30 @@ public class ServerController {
                 this.server.run();
 
             } catch (Exception e) {
-                System.err.println("Erro: " + e.toString());
+                System.err.println("Erro: " + e);
             }
 
         }
 
+    }
+
+    public void disconnect() throws IOException {
+        this.server.sendMsg("Servidor encerrou conexão!");
+        this.server.disconnect();
+    }
+
+    public void enableChat() {
+        this.msgField.setDisable(false);
+        this.msgBtn.setDisable(false);
+        this.audioBtn.setDisable(false);
+        this.stopServerBtn.setDisable(false);
+    }
+
+    public void disableChat() {
+        this.msgField.setDisable(true);
+        this.msgBtn.setDisable(true);
+        this.audioBtn.setDisable(true);
+        this.stopServerBtn.setDisable(true);
     }
 
     public void playAudio(byte[] audio){

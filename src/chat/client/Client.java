@@ -2,6 +2,7 @@ package chat.client;
 
 import java.io.*;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
@@ -21,6 +22,7 @@ public class Client {
     public BufferedReader inputStream;
     public BufferedWriter outputStream;
 
+    public boolean connected = false;
 
     public Client(chat.ClientApp clientApp) {
         this.ipAddress = "";
@@ -38,7 +40,10 @@ public class Client {
         new Thread( () -> {
 
             try {
+
                 this.server = new Socket(this.ipAddress, this.port);
+                this.server.setSoTimeout(500);
+                this.connected = true;
 
                 this.inputStream = new BufferedReader(new InputStreamReader(
                         server.getInputStream(), StandardCharsets.UTF_8));
@@ -46,11 +51,16 @@ public class Client {
                         server.getOutputStream(), StandardCharsets.UTF_8));
                 this.outputStream.flush();
 
+                this.outputStream.write("Cliente conectado" + "\nText\n");
+                this.outputStream.flush();
 
-                while (true) {
+                while (connected) {
+
                     this.recMsg();
                 }
 
+                System.out.println("Disconectando...");
+                this.server.close();
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -60,23 +70,41 @@ public class Client {
 
     }
 
-    public void recMsg () throws IOException {
-        String line = "";
-        String message = "";
-        do{
-            message = message + line;
-            line = this.inputStream.readLine();
-        }while(!(line.equals("Text") || line.equals("Audio")));
+    public void disconnect() throws IOException {
+        this.connected = false;
+        this.outputStream.write("#exit");
+        this.outputStream.flush();
+        Platform.runLater(() -> this.clientApp.disableChat());
+    }
 
-        final String finalMessage = message;
-        if(line.equals("Text")){
-            System.out.println("Server >> " + finalMessage);
-            Platform.runLater(() -> this.clientApp.addMsg("Server >> " + finalMessage));
-        }
-        else{
-            System.out.println("Server >> Mensagem de voz");
-            byte[] audio = Base64.getDecoder().decode(finalMessage);
-            Platform.runLater(() -> this.clientApp.addMsg(audio, "Server"));
+    public void recMsg () throws IOException {
+        try {
+
+            String line = "";
+            String message = "";
+            do {
+                message = message + line;
+                line = this.inputStream.readLine();
+
+                if (line.equals("#exit")){
+                    this.disconnect();
+                    return;
+                }
+
+            } while (!(line.equals("Text") || line.equals("Audio")));
+
+            final String finalMessage = message;
+            if (line.equals("Text")) {
+                System.out.println("Server >> " + finalMessage);
+                Platform.runLater(() -> this.clientApp.addMsg("Server >> " + finalMessage));
+            } else {
+                System.out.println("Server >> Mensagem de voz");
+                byte[] audio = Base64.getDecoder().decode(finalMessage);
+                Platform.runLater(() -> this.clientApp.addMsg(audio, "Server"));
+            }
+
+        }  catch (SocketTimeoutException e){
+            assert true; // Não faz nada
         }
     }
 

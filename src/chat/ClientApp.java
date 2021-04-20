@@ -53,4 +53,11 @@ public class ClientApp extends Application {
         this.controller.addMsg(audio, author);
     }
 
+    public void disableChat() {
+        this.controller.disableChat();
+    }
+
+    public void enableChat() {
+        this.controller.enableChat();
+    }
 }

@@ -44,7 +44,6 @@ public class ServerApp extends Application {
         launch(args);
     }
 
-
     public void addMsg(String msg) {
         this.controller.addMsg(msg);
     }
@@ -53,5 +52,12 @@ public class ServerApp extends Application {
         this.controller.addMsg(audio, author);
     }
 
+    public void disableChat() {
+        this.controller.disableChat();
+    }
+
+    public void enableChat() {
+        this.controller.enableChat();
+    }
 
 }

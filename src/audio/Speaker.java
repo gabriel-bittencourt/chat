@@ -30,6 +30,9 @@ public class Speaker {
 
     public void play(byte[] audioData){
 
+        System.out.println("audio");
+        System.out.println(audioData);
+
         byteInputStream = new ByteArrayInputStream(audioData);
         audioInputStream = new AudioInputStream(byteInputStream, audioFormat,
                 audioData.length / audioFormat.getFrameSize());

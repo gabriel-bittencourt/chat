@@ -26,16 +26,18 @@
                 prefWidth="68.0"
                 text="Enviar"
                 onAction="#sendMsg"
+                fx:id="msgBtn"
         />
         <Button
-            layoutX="255.0"
-            layoutY="345.0"
-            mnemonicParsing="false"
-            prefHeight="41.0"
-            prefWidth="68.0"
-            text="Gravar"
-            onMousePressed="#captureAudio"
-            onMouseReleased="#stopAndSendAudio"
+                layoutX="255.0"
+                layoutY="345.0"
+                mnemonicParsing="false"
+                prefHeight="41.0"
+                prefWidth="68.0"
+                text="Gravar"
+                fx:id="audioBtn"
+                onMousePressed="#captureAudio"
+                onMouseReleased="#stopAndSendAudio"
         />
         <TextField
                 layoutX="11.0"
@@ -91,6 +93,7 @@
                 prefHeight="41.0"
                 prefWidth="80.0"
                 text="Encerrar"
+                onAction="#disconnect"
         />
 
     </Pane>

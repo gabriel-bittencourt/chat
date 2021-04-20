@@ -28,6 +28,8 @@ public class ClientController {
     // Mensagens
     public Pane msgPane;
     public TextField msgField;
+    public Button msgBtn;
+    public Button audioBtn;
     //
 
     public Client client;
@@ -35,10 +37,13 @@ public class ClientController {
     private Microphone microphone;
     private Speaker speaker;
 
+
     @FXML
     private void initialize() {
         microphone = new Microphone();
         speaker = new Speaker();
+
+        this.disableChat();
     }
 
     public void connect() {
@@ -59,6 +64,7 @@ public class ClientController {
                 this.client.setPort(port);
 
                 this.client.run();
+                this.enableChat();
 
             } catch (Exception e) {
                 System.err.println("Erro: " + e.toString());
@@ -66,6 +72,25 @@ public class ClientController {
 
         }
 
+    }
+
+    public void disconnect() throws IOException {
+        this.client.sendMsg("Cliente encerrou conexão!");
+        this.client.disconnect();
+    }
+
+    public void enableChat() {
+        this.msgField.setDisable(false);
+        this.msgBtn.setDisable(false);
+        this.audioBtn.setDisable(false);
+        this.disconnectServerBtn.setDisable(false);
+    }
+
+    public void disableChat() {
+        this.msgField.setDisable(true);
+        this.msgBtn.setDisable(true);
+        this.audioBtn.setDisable(true);
+        this.disconnectServerBtn.setDisable(true);
     }
 
     public void playAudio(byte[] audio){
@@ -108,7 +133,6 @@ public class ClientController {
 
         String msg = this.msgField.getText();
         this.msgField.setText("");
-
         this.client.sendMsg(msg);
 
     }
@@ -133,5 +157,6 @@ public class ClientController {
 
         return (nChildren) * offset;
     }
+
 
 }

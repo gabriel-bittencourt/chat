@@ -1,88 +1,89 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="chat.view.server.ServerController">
 
-       <Pane prefHeight="400.0" prefWidth="350.0">
+    <Pane prefHeight="400.0" prefWidth="350.0">
 
-      
-              <Pane
-                      fx:id="msgPane"
-                      layoutX="10.0"
-                      layoutY="10.0"
-                      prefHeight="310.0"
-                      prefWidth="310.0"
-                      style="-fx-border-color: #000;"
-              >
-            </Pane>
-              <Button
-                      fx:id="sendMsgBtn"
-                      layoutX="185.0"
-                      layoutY="345.0"
-                      mnemonicParsing="false"
-                      onAction="#sendMsg"
-                      prefHeight="41.0"
-                      prefWidth="68.0"
-                      text="Enviar"
-              />
-               <Button
-                       layoutX="255.0"
-                       layoutY="345.0"
-                       mnemonicParsing="false"
-                       prefHeight="41.0"
-                       prefWidth="68.0"
-                       text="Gravar"
-                       onMousePressed="#captureAudio"
-                       onMouseReleased="#stopAndSendAudio"
-               />
-              <TextField
-                      fx:id="msgField"
-                      layoutX="11.0"
-                      layoutY="345.0"
-                      prefHeight="41.0"
-                      prefWidth="172.0"
-                      promptText="Mensagem"
-                      onAction="#sendMsg"
-              />
 
-       </Pane>
-   
-       <Pane
-               layoutX="350.0"
-               prefHeight="400.0"
-               prefWidth="150.0"
-       >
-              <TextField
-                      fx:id="inputPort"
-                      layoutX="8.0"
-                      layoutY="14.0"
-                      prefHeight="41.0"
-                      prefWidth="128.0"
-                      promptText="Porta"
-                      text="8080"
-              />
-              <Button
-                      fx:id="startServerBtn"
-                      layoutX="68.0"
-                      layoutY="69.0"
-                      mnemonicParsing="false"
-                      onAction="#startServer"
-                      prefHeight="41.0"
-                      prefWidth="68.0"
-                      text="Iniciar"
-              />
-              <Button
-                      fx:id="stopServerBtn"
-                      layoutX="56.0"
-                      layoutY="345.0"
-                      mnemonicParsing="false"
-                      prefHeight="41.0"
-                      prefWidth="80.0"
-                      text="Encerrar"
-              />
-       </Pane>
+        <Pane
+                fx:id="msgPane"
+                layoutX="10.0"
+                layoutY="10.0"
+                prefHeight="310.0"
+                prefWidth="310.0"
+                style="-fx-border-color: #000;"
+        >
+        </Pane>
+        <Button
+                layoutX="185.0"
+                layoutY="345.0"
+                mnemonicParsing="false"
+                onAction="#sendMsg"
+                prefHeight="41.0"
+                prefWidth="68.0"
+                text="Enviar"
+                fx:id="msgBtn"
+        />
+        <Button
+                layoutX="255.0"
+                layoutY="345.0"
+                mnemonicParsing="false"
+                prefHeight="41.0"
+                prefWidth="68.0"
+                text="Gravar"
+                fx:id="audioBtn"
+                onMousePressed="#captureAudio"
+                onMouseReleased="#stopAndSendAudio"
+        />
+        <TextField
+                fx:id="msgField"
+                layoutX="11.0"
+                layoutY="345.0"
+                prefHeight="41.0"
+                prefWidth="172.0"
+                promptText="Mensagem"
+                onAction="#sendMsg"
+        />
+
+    </Pane>
+
+    <Pane
+            layoutX="350.0"
+            prefHeight="400.0"
+            prefWidth="150.0"
+    >
+        <TextField
+                fx:id="inputPort"
+                layoutX="8.0"
+                layoutY="14.0"
+                prefHeight="41.0"
+                prefWidth="128.0"
+                promptText="Porta"
+                text="8080"
+        />
+        <Button
+                fx:id="startServerBtn"
+                layoutX="68.0"
+                layoutY="69.0"
+                mnemonicParsing="false"
+                onAction="#startServer"
+                prefHeight="41.0"
+                prefWidth="68.0"
+                text="Iniciar"
+        />
+        <Button
+                fx:id="stopServerBtn"
+                layoutX="56.0"
+                layoutY="345.0"
+                mnemonicParsing="false"
+                prefHeight="41.0"
+                prefWidth="80.0"
+                text="Encerrar"
+                onAction="#disconnect"
+        />
+    </Pane>
 
 </AnchorPane>
