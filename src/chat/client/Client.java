@@ -64,7 +64,7 @@ public class Client {
         String line = "";
         String message = "";
         do{
-            message += line;
+            message = message + line;
             line = this.inputStream.readLine();
         }while(!(line.equals("Text") || line.equals("Audio")));
 
@@ -75,7 +75,7 @@ public class Client {
         }
         else{
             System.out.println("Server >> Mensagem de voz");
-            byte[] audio = finalMessage.getBytes(StandardCharsets.UTF_8);
+            byte[] audio = Base64.getDecoder().decode(finalMessage);
             Platform.runLater(() -> this.clientApp.addMsg(audio));
         }
     }

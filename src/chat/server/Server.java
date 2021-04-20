@@ -70,13 +70,13 @@ public class Server {
         String line = "";
         String message = "";
         do{
-            message += line;
+            message = message + line;
             line = this.inputStream.readLine();
         }while(!(line.equals("Text") || line.equals("Audio")));
 
         final String finalMessage = message;
         if(line.equals("Text")){
-            System.out.println("Server >> " + finalMessage);
+            System.out.println("Client >> " + finalMessage);
             Platform.runLater(() -> this.mainApp.addMsg("Server >> " + finalMessage));
         }
         else{
@@ -96,7 +96,7 @@ public class Server {
 
     public void sendMsg (byte[] audio) throws IOException {
         System.out.println("You >> Mensagem de voz");
-        String msg = new String(audio, StandardCharsets.UTF_8);
+        String msg = Base64.getEncoder().encodeToString(audio);
         this.outputStream.write(msg + "\nAudio\n");
         this.outputStream.flush();
         Platform.runLater(() -> this.mainApp.addMsg(audio));
