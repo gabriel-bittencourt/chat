@@ -40,14 +40,23 @@ public class ServerApp extends Application {
     }
 
     public static void main(String[] args) {
-
         launch(args);
     }
-
 
     public void addMsg(String msg) {
         this.controller.addMsg(msg);
     }
 
+    public void addMsg(byte[] audio, String author) {
+        this.controller.addMsg(audio, author);
+    }
+
+    public void disableChat() {
+        this.controller.disableChat();
+    }
+
+    public void enableChat() {
+        this.controller.enableChat();
+    }
 
 }

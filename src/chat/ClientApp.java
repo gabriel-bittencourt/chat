@@ -40,7 +40,6 @@ public class ClientApp extends Application {
     }
 
     public static void main(String[] args) {
-
         launch(args);
     }
 
@@ -49,7 +48,15 @@ public class ClientApp extends Application {
         this.controller.addMsg(msg);
     }
 
+    public void addMsg(byte[] audio, String author){
+        this.controller.addMsg(audio, author);
+    }
 
+    public void disableChat() {
+        this.controller.disableChat();
+    }
 
-
+    public void enableChat() {
+        this.controller.enableChat();
+    }
 }

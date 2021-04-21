@@ -1,14 +1,12 @@
 package chat.view.server;
 
+import audio.Microphone;
+import audio.Speaker;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import chat.server.Server;
 import javafx.scene.text.Text;
@@ -27,21 +25,26 @@ public class ServerController {
     // Mensagens
     public Pane msgPane;
     public TextField msgField;
-    public Button sendMsgBtn;
+    public Button msgBtn;
+    public Button audioBtn;
     //
 
     public Server server;
 
+    private Microphone microphone;
+    private Speaker speaker;
+
     @FXML
     private void initialize() {
-        //
-    }
+        microphone = new Microphone();
+        speaker = new Speaker();
 
+        this.disableChat();
+    }
 
     public void startServer() {
 
-        if ( this.server.getPort() != -1 ) {
-            System.out.println("Servidor já iniciado!");
+        if ( this.server.getConnected() ) {
             return;
         }
 
@@ -50,9 +53,6 @@ public class ServerController {
 
         if ( !portTxt.trim().equals("") ){
             try {
-
-                System.out.println("Iniciando servidor");
-
                 port = Integer.parseInt(portTxt);
 
                 this.server.setPort(port);
@@ -60,31 +60,66 @@ public class ServerController {
                 this.server.run();
 
             } catch (Exception e) {
-                System.err.println("Erro: " + e.toString());
+                System.err.println("Erro: " + e);
             }
 
         }
 
     }
 
+    public void disconnect() throws IOException {
+        this.server.sendMsg("Servidor encerrou conexão!");
+        this.server.disconnect();
+    }
+
+    public void enableChat() {
+        this.msgField.setDisable(false);
+        this.msgBtn.setDisable(false);
+        this.audioBtn.setDisable(false);
+        this.stopServerBtn.setDisable(false);
+    }
+
+    public void disableChat() {
+        this.msgField.setDisable(true);
+        this.msgBtn.setDisable(true);
+        this.audioBtn.setDisable(true);
+        this.stopServerBtn.setDisable(true);
+    }
+
+    public void playAudio(byte[] audio){
+        speaker.play(audio);
+    }
+
+    public void captureAudio(){
+        microphone.startCapturing();
+    }
+
+    public void stopAndSendAudio() throws IOException{
+        microphone.stopCapturing();
+        byte[] audio = microphone.audioData;
+        this.server.sendMsg(audio);
+    }
+
     public void addMsg(String msg) {
-        ObservableList<Node> paneChildren = msgPane.getChildren();
-
-        int nChildren = paneChildren.size();
-        if(nChildren >= 20){
-
-            paneChildren.remove(0);
-            nChildren--;
-
-            for (Node child: paneChildren) {
-                double prevY = child.getLayoutY();
-                child.setLayoutY(prevY - 15);
-            }
-        }
-
-        int offset = (1 + nChildren) * 15;
+        int offset = scrollMsgPane() + 15;
         Text text = new Text(5, offset, msg);
         msgPane.getChildren().add(text);
+    }
+
+    public void addMsg(byte[] msg, String author){
+        int offset = scrollMsgPane();
+        Pane newPane = new Pane();
+        newPane.setLayoutY(offset);
+
+        Text text = new Text(5, 17, author + " >>");
+
+        Button button = new Button("Mensagem de voz");
+        button.setLayoutX(60);
+        button.setOnAction((event) -> playAudio(msg));
+
+        newPane.getChildren().addAll(text, button);
+
+        msgPane.getChildren().add(newPane);
     }
 
     public void sendMsg() throws IOException {
@@ -94,6 +129,27 @@ public class ServerController {
 
         this.server.sendMsg(msg);
 
+    }
+
+    // Retorna o y a ser usado na prox msg
+    private int scrollMsgPane(){
+        ObservableList<Node> paneChildren = msgPane.getChildren();
+        int offset = 25;
+        int maxChildren = (int)(msgPane.getHeight() / offset);
+        int nChildren = paneChildren.size();
+
+        if(nChildren >= maxChildren){
+
+            paneChildren.remove(0);
+            nChildren--;
+
+            for (Node child: paneChildren) {
+                double prevY = child.getLayoutY();
+                child.setLayoutY(prevY - offset);
+            }
+        }
+
+        return (nChildren) * offset;
     }
 
 }
