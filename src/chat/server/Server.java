@@ -16,17 +16,17 @@ import chat.ServerApp;
 
 public class Server {
 
-    public int port;
+    private int port;
 
-    public ServerSocket server;
-    public Socket client;
+    private ServerSocket server;
+    private Socket client;
 
     public ServerApp mainApp;
 
-    public BufferedReader inputStream;
-    public BufferedWriter outputStream;
+    private BufferedReader inputStream;
+    private BufferedWriter outputStream;
 
-    public boolean connected = false;
+    private boolean connected = false;
 
     public Server(ServerApp serverApp) {
         this.port = -1;
@@ -93,7 +93,6 @@ public class Server {
                 line = this.inputStream.readLine();
 
                 if (line.equals("#exit")){
-//                    this.sendMsg("Server encerrou a conexão!");
                     this.disconnect();
                     return;
                 }
@@ -111,9 +110,11 @@ public class Server {
             }
 
         } catch (SocketTimeoutException e){
-            assert true; // Não faz nada
+            // Não faz nada
         }
     }
+
+    // Getters e Setters
 
     public void sendMsg (String msg) throws IOException {
 
@@ -138,5 +139,9 @@ public class Server {
     public void setPort(int port){
         this.port = port;
     }
+
+    public boolean getConnected() { return this.connected; }
+
+    public void setConnected(boolean connected) { this.connected = connected; }
 
 }

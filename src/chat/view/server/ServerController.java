@@ -44,8 +44,7 @@ public class ServerController {
 
     public void startServer() {
 
-        if ( this.server.connected ) {
-            System.out.println("Servidor já iniciado!");
+        if ( this.server.getConnected() ) {
             return;
         }
 
@@ -54,9 +53,6 @@ public class ServerController {
 
         if ( !portTxt.trim().equals("") ){
             try {
-
-                System.out.println("Iniciando servidor");
-
                 port = Integer.parseInt(portTxt);
 
                 this.server.setPort(port);

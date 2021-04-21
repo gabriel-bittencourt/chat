@@ -56,8 +56,6 @@ public class ClientController {
 
             try {
 
-                System.out.println("Conectando ao servidor!");
-
                 port = Integer.parseInt(portTxt);
 
                 this.client.setIpAddress(ipAddress);
@@ -67,7 +65,7 @@ public class ClientController {
                 this.enableChat();
 
             } catch (Exception e) {
-                System.err.println("Erro: " + e.toString());
+                System.err.println("Erro: " + e);
             }
 
         }
@@ -157,6 +155,5 @@ public class ClientController {
 
         return (nChildren) * offset;
     }
-
 
 }

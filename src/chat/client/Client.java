@@ -12,17 +12,17 @@ import chat.ClientApp;
 
 public class Client {
 
-    public String ipAddress;
-    public int port;
+    private String ipAddress;
+    private int port;
 
-    public Socket server;
+    private Socket server;
 
     public ClientApp clientApp;
 
-    public BufferedReader inputStream;
-    public BufferedWriter outputStream;
+    private BufferedReader inputStream;
+    private BufferedWriter outputStream;
 
-    public boolean connected = false;
+    private boolean connected = false;
 
     public Client(chat.ClientApp clientApp) {
         this.ipAddress = "";
@@ -59,7 +59,6 @@ public class Client {
                     this.recMsg();
                 }
 
-                System.out.println("Disconectando...");
                 this.server.close();
 
             } catch (IOException e) {
@@ -104,7 +103,7 @@ public class Client {
             }
 
         }  catch (SocketTimeoutException e){
-            assert true; // Não faz nada
+            // Não faz nada
         }
     }
 
@@ -123,6 +122,8 @@ public class Client {
         Platform.runLater(() -> this.clientApp.addMsg(audio, "You"));
     }
 
+    // Getters e Setters
+
     public String getIpAddress(){
         return this.ipAddress;
     }
@@ -138,5 +139,9 @@ public class Client {
     public void setPort(int port){
         this.port = port;
     }
+
+    public boolean getConnected() { return this.connected; }
+
+    public void setConnected(boolean connected) { this.connected = connected; }
 
 }
